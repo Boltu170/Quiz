@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Data Sources Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+    
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .header {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .header h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 15px;
+    }
+    
+    .section-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .section-title {
+        color: #666;
+        font-size: 1.1em;
+    }
+    
+    .score {
+        color: #667eea;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    
+    .progress-bar {
+        background: #e0e0e0;
+        height: 12px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+        background: #667eea;
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+        color: #999;
+        font-size: 0.9em;
+    }
+    
+    .question-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .question-badge {
+        display: inline-block;
+        background: #e8eaf6;
+        color: #667eea;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    
+    .question-text {
+        color: #333;
+        font-size: 1.8em;
+        font-weight: 600;
+        margin-bottom: 30px;
+        line-height: 1.4;
+    }
+    
+    .options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .option {
+        background: white;
+        border: 3px solid #e0e0e0;
+        padding: 20px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 1.1em;
+    }
+    
+    .option:hover:not(.disabled) {
+        border-color: #667eea;
+        background: #f5f7ff;
+        transform: translateX(5px);
+    }
+    
+    .option.correct {
+        border-color: #4caf50;
+        background: #e8f5e9;
+    }
+    
+    .option.wrong {
+        border-color: #f44336;
+        background: #ffebee;
+    }
+    
+    .option.disabled {
+        cursor: default;
+        opacity: 0.5;
+    }
+    
+    .feedback {
+        background: #f5f5f5;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+    
+    .feedback.correct {
+        background: #e8f5e9;
+        color: #2e7d32;
+    }
+    
+    .feedback.wrong {
+        background: #ffebee;
+        color: #c62828;
+    }
+    
+    .next-btn {
+        width: 100%;
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 20px;
+        border-radius: 12px;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .next-btn:hover {
+        background: #5568d3;
+    }
+    
+    .hint {
+        background: #e3f2fd;
+        border: 2px solid #90caf9;
+        padding: 15px;
+        border-radius: 12px;
+        color: #1565c0;
+    }
+    
+    .results-screen {
+        text-align: center;
+    }
+    
+    .results-card {
+        background: white;
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .trophy {
+        font-size: 6em;
+        margin-bottom: 20px;
+    }
+    
+    .results-title {
+        font-size: 3em;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    .final-score {
+        font-size: 4em;
+        color: #667eea;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .percentage {
+        font-size: 2em;
+        color: #999;
+        margin-bottom: 30px;
+    }
+    
+    .message {
+        font-size: 1.5em;
+        color: #666;
+        margin-bottom: 40px;
+    }
+    
+    .restart-btn {
+        background: #667eea;
+        color: white;
+        border: none;
+        padding: 20px 40px;
+        border-radius: 12px;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .restart-btn:hover {
+        background: #5568d3;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <div id="quiz-container"></div>
+    </div>
+
+```
+<script>
+    const sections = [
+        {
+            title: "Financial Literacy Basics",
+            questions: [
+                {
+                    question: "What is financial literacy according to Lusardi and Mitchell (2014)?",
+                    options: [
+                        "The ability to use Excel spreadsheets",
+                        "The ability to process economic information and make informed financial decisions",
+                        "Having a degree in finance",
+                        "Knowing how to trade stocks"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which of these is NOT a personal financial decision requiring financial literacy?",
+                    options: [
+                        "Budgeting and planning",
+                        "Credit decisions",
+                        "Choosing what to eat for lunch",
+                        "Investment decisions"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What does the Companies Act 2006 require directors to provide?",
+                    options: [
+                        "Weekly profit updates",
+                        "A true and fair view of the company's financial position",
+                        "Daily stock tips",
+                        "Personal tax returns"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "When evaluating whether to buy shares in a company, what should you screen for?",
+                    options: [
+                        "The CEO's Instagram followers",
+                        "Profitability, liquidity, solvency, and growth prospects",
+                        "The company logo design",
+                        "Office location only"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What does ROE stand for?",
+                    options: [
+                        "Rate of Exchange",
+                        "Return on Equity",
+                        "Risk of Error",
+                        "Revenue over Expenses"
+                    ],
+                    correct: 1
+                }
+            ]
+        },
+        {
+            title: "Primary Sources of Financial Data",
+            questions: [
+                {
+                    question: "What is a primary source of financial data?",
+                    options: [
+                        "A news article about a company",
+                        "Original documents produced by the entity or regulator",
+                        "A YouTube video explaining stocks",
+                        "A tweet from a financial influencer"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Where can you find UK company filings?",
+                    options: [
+                        "Companies House",
+                        "Facebook",
+                        "Wikipedia",
+                        "Yahoo Finance only"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "What is a Form 10-K?",
+                    options: [
+                        "A tax return form",
+                        "An annual report filed with the SEC (US)",
+                        "A quarterly earnings statement",
+                        "A resignation letter"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which of these would you find in an annual report?",
+                    options: [
+                        "The CEO's favorite color",
+                        "Celebrity gossip",
+                        "Consolidated financial statements and auditor's report",
+                        "Tomorrow's lottery numbers"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What is SEC EDGAR?",
+                    options: [
+                        "A person's name",
+                        "A US database for company filings",
+                        "A type of financial ratio",
+                        "A UK regulatory body"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What is Form 8-K used for?",
+                    options: [
+                        "Annual tax filing",
+                        "Reporting material events like acquisitions or leadership changes",
+                        "Monthly payroll",
+                        "Stock market predictions"
+                    ],
+                    correct: 1
+                }
+            ]
+        },
+        {
+            title: "Secondary Sources of Financial Data",
+            questions: [
+                {
+                    question: "What do secondary sources do?",
+                    options: [
+                        "Create original financial statements",
+                        "Reorganize and interpret data from primary reports",
+                        "Replace the need for primary sources",
+                        "Audit companies"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which platform is typically used by professional traders?",
+                    options: [
+                        "Instagram",
+                        "Bloomberg Terminal",
+                        "TikTok",
+                        "Reddit"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What can you find on Yahoo Finance?",
+                    options: [
+                        "Share prices and basic charts",
+                        "Your personal bank statements",
+                        "Company secrets",
+                        "Next week's winning stocks"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "Why might a student use Yahoo Finance instead of Bloomberg?",
+                    options: [
+                        "Yahoo Finance is more accurate",
+                        "Bloomberg doesn't have any data",
+                        "Yahoo Finance is free and user-friendly",
+                        "Students aren't allowed to use Bloomberg"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "What does LSEG provide?",
+                    options: [
+                        "Free pizza",
+                        "Financial markets infrastructure and data analytics",
+                        "Personal loans",
+                        "University degrees"
+                    ],
+                    correct: 1
+                }
+            ]
+        },
+        {
+            title: "Government & Economic Data",
+            questions: [
+                {
+                    question: "What does ONS stand for?",
+                    options: [
+                        "Online News Service",
+                        "Office for National Statistics",
+                        "Official Number System",
+                        "Overseas Network Security"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What type of data does the ONS provide?",
+                    options: [
+                        "Celebrity news",
+                        "GDP, inflation, employment, and trade figures",
+                        "Stock tips",
+                        "Company annual reports"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "CPI stands for:",
+                    options: [
+                        "Company Profit Index",
+                        "Consumer Price Index",
+                        "Corporate Performance Indicator",
+                        "Credit Payment Information"
+                    ],
+                    correct: 1
+                }
+            ]
+        },
+        {
+            title: "Qualitative vs Quantitative Data",
+            questions: [
+                {
+                    question: "Which is an example of quantitative data?",
+                    options: [
+                        "Management's strategic vision",
+                        "Revenue of £5 million",
+                        "Risk assessment commentary",
+                        "Company culture description"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Which is an example of qualitative data?",
+                    options: [
+                        "Share price of £12.50",
+                        "EPS of 2.3",
+                        "Management discussion and analysis",
+                        "Total assets of £1 billion"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "Quantitative data is:",
+                    options: [
+                        "Always written in paragraphs",
+                        "Numerical and can be measured statistically",
+                        "Only found in newspapers",
+                        "Descriptive and non-numerical"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "ESG disclosures are typically:",
+                    options: [
+                        "Purely quantitative",
+                        "Purely qualitative",
+                        "A mix of qualitative and quantitative",
+                        "Not relevant to investors"
+                    ],
+                    correct: 2
+                }
+            ]
+        },
+        {
+            title: "Key Terms & Acronyms",
+            questions: [
+                {
+                    question: "IFRS stands for:",
+                    options: [
+                        "International Food Reporting Standards",
+                        "International Financial Reporting Standards",
+                        "Internal Finance Risk System",
+                        "International Fraud Reporting Service"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What does SEC stand for?",
+                    options: [
+                        "Securities and Exchange Commission",
+                        "Super Expensive Cars",
+                        "Stock Exchange Center",
+                        "Standard Economic Committee"
+                    ],
+                    correct: 0
+                },
+                {
+                    question: "What does ESG stand for?",
+                    options: [
+                        "Every Student Graduates",
+                        "Environmental, Social, and Governance",
+                        "Economic Strategy Group",
+                        "European Standards Guide"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "P/E ratio stands for:",
+                    options: [
+                        "Profit and Earnings",
+                        "Price to Earnings",
+                        "People and Employment",
+                        "Percentage of Equity"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "EPS stands for:",
+                    options: [
+                        "Earnings Per Share",
+                        "Economic Policy Statement",
+                        "Executive Pay Scale",
+                        "Estimated Profit Statistics"
+                    ],
+                    correct: 0
+                }
+            ]
+        },
+        {
+            title: "Practical Application",
+            questions: [
+                {
+                    question: "If you wanted to download historical stock price data for free, where would you go?",
+                    options: [
+                        "Companies House",
+                        "Yahoo Finance",
+                        "Your local library",
+                        "SEC EDGAR"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "What format does Yahoo Finance allow you to export data in?",
+                    options: [
+                        "PDF only",
+                        "CSV (Excel-compatible)",
+                        "Handwritten notes",
+                        "Audio files"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "If you wanted to check if a UK company director has resigned, where would you look?",
+                    options: [
+                        "Facebook",
+                        "Companies House",
+                        "Yahoo Finance",
+                        "Google Maps"
+                    ],
+                    correct: 1
+                }
+            ]
+        }
+    ];
+
+    let currentSection = 0;
+    let currentQuestion = 0;
+    let selectedAnswer = null;
+    let showResult = false;
+    let score = 0;
+    let answeredQuestions = 0;
+
+    const totalQuestions = sections.reduce((sum, section) => sum + section.questions.length, 0);
+
+    function render() {
+        const container = document.getElementById('quiz-container');
+        
+        if (answeredQuestions === totalQuestions) {
+            container.innerHTML = renderResults();
+        } else {
+            container.innerHTML = renderQuestion();
+        }
+        
+        attachEventListeners();
+    }
+
+    function renderQuestion() {
+        const currentQ = sections[currentSection].questions[currentQuestion];
+        const progress = (answeredQuestions / totalQuestions) * 100;
+        
+        return `
+            <div class="header">
+                <h1>Financial Data Sources Quiz</h1>
+                <div class="section-info">
+                    <div class="section-title">Section ${currentSection + 1}: ${sections[currentSection].title}</div>
+                    <div class="score">Score: ${score}/${answeredQuestions}</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                <div class="progress-text">Question ${answeredQuestions + 1} of ${totalQuestions}</div>
+            </div>
+            
+            <div class="question-card">
+                <div class="question-badge">
+                    Question ${currentQuestion + 1} of ${sections[currentSection].questions.length}
+                </div>
+                
+                <div class="question-text">${currentQ.question}</div>
+                
+                <div class="options">
+                    ${currentQ.options.map((option, index) => {
+                        let className = 'option';
+                        if (showResult) {
+                            className += ' disabled';
+                            if (index === currentQ.correct) className += ' correct';
+                            if (index === selectedAnswer && index !== currentQ.correct) className += ' wrong';
+                        }
+                        return `<div class="${className}" data-index="${index}">${option}</div>`;
+                    }).join('')}
+                </div>
+                
+                ${showResult ? `
+                    <div class="feedback ${selectedAnswer === currentQ.correct ? 'correct' : 'wrong'}">
+                        ${selectedAnswer === currentQ.correct 
+                            ? '✓ Correct! Well done!' 
+                            : '✗ Incorrect. The correct answer is highlighted above.'}
+                    </div>
+                    <button class="next-btn" id="next-btn">
+                        ${currentQuestion < sections[currentSection].questions.length - 1 || currentSection < sections.length - 1
+                            ? 'Next Question →'
+                            : 'See Results →'}
+                    </button>
+                ` : `
+                    <div class="hint">💡 Select an answer above to continue</div>
+                `}
+            </div>
+        `;
+    }
+
+    function renderResults() {
+        const percentage = Math.round((score / totalQuestions) * 100);
+        let message = '';
+        
+        if (percentage >= 90) message = "Outstanding! You're a financial data expert! 🌟";
+        else if (percentage >= 75) message = "Excellent work! You've got a solid grasp! 👏";
+        else if (percentage >= 60) message = "Good job! Keep learning! 📚";
+        else if (percentage >= 50) message = "Not bad! Review the material and try again! 💪";
+        else message = "Keep practicing! You'll get there! 🎯";
+        
+        return `
+            <div class="results-screen">
+                <div class="results-card">
+                    <div class="trophy">🏆</div>
+                    <div class="results-title">Quiz Complete!</div>
+                    <div class="final-score">${score}/${totalQuestions}</div>
+                    <div class="percentage">${percentage}%</div>
+                    <div class="message">${message}</div>
+                    <button class="restart-btn" id="restart-btn">🔄 Try Again</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function attachEventListeners() {
+        if (!showResult) {
+            document.querySelectorAll('.option:not(.disabled)').forEach(option => {
+                option.addEventListener('click', function() {
+                    handleAnswer(parseInt(this.dataset.index));
+                });
+            });
+        }
+        
+        const nextBtn = document.getElementById('next-btn');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', handleNext);
+        }
+        
+        const restartBtn = document.getElementById('restart-btn');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', restart);
+        }
+    }
+
+    function handleAnswer(index) {
+        if (showResult) return;
+        
+        selectedAnswer = index;
+        showResult = true;
+        answeredQuestions++;
+        
+        if (index === sections[currentSection].questions[currentQuestion].correct) {
+            score++;
+        }
+        
+        render();
+    }
+
+    function handleNext() {
+        if (currentQuestion < sections[currentSection].questions.length - 1) {
+            currentQuestion++;
+        } else if (currentSection < sections.length - 1) {
+            currentSection++;
+            currentQuestion = 0;
+        }
+        
+        selectedAnswer = null;
+        showResult = false;
+        render();
+    }
+
+    function restart() {
+        currentSection = 0;
+        currentQuestion = 0;
+        selectedAnswer = null;
+        showResult = false;
+        score = 0;
+        answeredQuestions = 0;
+        render();
+    }
+
+    render();
+</script>
+```
+
+</body>
+</html>
